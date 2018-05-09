@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cc.openkit.admin.dao.FileQiniuMapper" >
+  <resultMap id="BaseResultMap" type="cc.openkit.admin.model.FileQiniu" >
+    <id column="fq_id" property="fqId" jdbcType="INTEGER" />
+    <result column="fq_accessKey" property="fqAccesskey" jdbcType="VARCHAR" />
+    <result column="fq_secretKey" property="fqSecretkey" jdbcType="VARCHAR" />
+    <result column="fq_bucket" property="fqBucket" jdbcType="VARCHAR" />
+    <result column="fq_url" property="fqUrl" jdbcType="VARCHAR" />
+    <result column="fq_zone" property="fqZone" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    fq_id, fq_accessKey, fq_secretKey, fq_bucket, fq_url, fq_zone
+  </sql>
+
+</mapper>

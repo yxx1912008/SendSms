@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>首页</title>
+    <link rel="stylesheet" href="../templates/style/plugins/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="../templates/style/plugins/font-awesome/css/font-awesome.min.css" media="all">
+    <style>
+        .info-box {
+            height: 85px;
+            background-color: white;
+            background-color: #ecf0f5;
+        }
+
+        .info-box .info-box-icon {
+            border-top-left-radius: 2px;
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+            border-bottom-left-radius: 2px;
+            display: block;
+            float: left;
+            height: 85px;
+            width: 85px;
+            text-align: center;
+            font-size: 45px;
+            line-height: 85px;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .info-box .info-box-content {
+            padding: 5px 10px;
+            margin-left: 85px;
+        }
+
+        .info-box .info-box-content .info-box-text {
+            display: block;
+            font-size: 14px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            text-transform: uppercase;
+        }
+
+        .info-box .info-box-content .info-box-number {
+            display: block;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .major {
+            font-weight: 10px;
+            color: #01AAED;
+        }
+
+        .main {
+            margin-top: 25px;
+        }
+
+        .main .layui-row {
+            margin: 10px 0;
+        }
+    </style>
+</head>
+
+<body>
+<div class="layui-fluid main">
+
+    <div class="layui-row">
+        <div class="layui-col-md12">
+            <ul class="layui-timeline">
+                <li class="layui-timeline-item">
+                    <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+                    <div class="layui-timeline-content layui-text">
+                        <h3 class="layui-timeline-title">更新日志</h3>
+                        <ul>
+                            <li>时间：2018-05-07</li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="layui-timeline-item">
+                    <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+                    <div class="layui-timeline-content layui-text">
+                        <h3 class="layui-timeline-title">2018年05月07日（v1.0.0）</h3>
+                        <p>
+                        <h3>#完成了后台基本框架搭建，实现了所有的外部工具的集成</h3>
+                        <ul>
+                            <li>分页插件：pagehelper</li>
+                            <li>统一mapper：mapper</li>
+                            <li>第三方根据库：openkit</li>
+                            <li>服务器校验：smart-validator</li>
+                            <li>前端框架：layui</li>
+                            <li>后台管理静态页面：admin</li>
+                        </ul>
+                        <h3>#账号密码加密方式</h3>
+                        <ul>
+                            <li>密码加盐加 MD5 32位大写加密</li>
+                            <li>
+                                <p>代码案例:</p>
+                                <pre class="layui-code">
+public static String md5pwd(String s){
+    return KitUtil.md5(s+StaticFinalVar.YAN);
+}</pre>
+                            </li>
+                        </ul>
+                        </p>
+                    </div>
+                </li>
+
+
+                <li class="layui-timeline-item">
+                    <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+                    <div class="layui-timeline-content layui-text">
+                        <div class="layui-timeline-title">更新日志</div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<script src="../templates/style/plugins/layui/layui.js"></script>
+<script>
+    layui.use('jquery', function () {
+        var $ = layui.jquery;
+        $('#test').on('click', function () {
+            parent.message.show({
+                skin: 'cyan'
+            });
+        });
+    });
+</script>
+</body>
+
+</html>

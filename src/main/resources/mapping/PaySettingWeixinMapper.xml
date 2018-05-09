@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cc.openkit.admin.dao.PaySettingWeixinMapper" >
+  <resultMap id="BaseResultMap" type="cc.openkit.admin.model.PaySettingWeixin" >
+    <id column="psw_id" property="pswId" jdbcType="INTEGER" />
+    <result column="psw_app_id" property="pswAppId" jdbcType="VARCHAR" />
+    <result column="psw_app_secret" property="pswAppSecret" jdbcType="VARCHAR" />
+    <result column="psw_app_key" property="pswAppKey" jdbcType="VARCHAR" />
+    <result column="psw_mchId" property="pswMchid" jdbcType="VARCHAR" />
+    <result column="psw_body" property="pswBody" jdbcType="VARCHAR" />
+    <result column="psw_partner_key" property="pswPartnerKey" jdbcType="VARCHAR" />
+    <result column="psw_partner_id" property="pswPartnerId" jdbcType="VARCHAR" />
+    <result column="psw_grant_type" property="pswGrantType" jdbcType="VARCHAR" />
+    <result column="psw_gate_url" property="pswGateUrl" jdbcType="VARCHAR" />
+    <result column="psw_notify_url" property="pswNotifyUrl" jdbcType="VARCHAR" />
+    <result column="psw_spbill_createIp" property="pswSpbillCreateip" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    psw_id, psw_app_id, psw_app_secret, psw_app_key, psw_mchId, psw_body, psw_partner_key, 
+    psw_partner_id, psw_grant_type, psw_gate_url, psw_notify_url, psw_spbill_createIp
+  </sql>
+
+
+
+</mapper>

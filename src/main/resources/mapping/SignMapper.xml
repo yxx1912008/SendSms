@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cc.openkit.admin.dao.SignMapper" >
+  <resultMap id="BaseResultMap" type="cc.openkit.admin.model.Sign" >
+    <id column="sign_id" property="signId" jdbcType="VARCHAR" />
+    <result column="sign_phone" property="signPhone" jdbcType="VARCHAR" />
+    <result column="sign_code" property="signCode" jdbcType="VARCHAR" />
+    <result column="sign_time" property="signTime" jdbcType="TIMESTAMP" />
+    <result column="sign_type" property="signType" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    sign_id, sign_phone, sign_code, sign_time, sign_type
+  </sql>
+
+  <select id="getModelByPhoneOrderByTimeEignt" resultMap="BaseResultMap" >
+    select
+    <include refid="Base_Column_List" />
+    from kit_sign
+    where sign_phone = #{phone,jdbcType=VARCHAR}
+    ORDER BY sign_time DESC LIMIT #{size,jdbcType=INTEGER};
+  </select>
+
+  <select id="getModelByKSTAndPhoneAndCode" resultMap="BaseResultMap" parameterType="cc.openkit.admin.model.Sign">
+    select
+    <include refid="Base_Column_List" />
+    from kit_sign
+    where sign_phone = #{signPhone,jdbcType=VARCHAR} and sign_code = #{signCode,jdbcType=VARCHAR} and  sign_id = #{signId,jdbcType=VARCHAR}
+    ORDER BY sign_time DESC
+  </select>
+
+</mapper>

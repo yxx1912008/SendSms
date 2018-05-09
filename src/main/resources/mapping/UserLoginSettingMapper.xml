@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cc.openkit.admin.dao.UserLoginSettingMapper" >
+  <resultMap id="BaseResultMap" type="cc.openkit.admin.model.UserLoginSetting" >
+    <id column="uls_id" property="ulsId" jdbcType="INTEGER" />
+    <result column="uls_type" property="ulsType" jdbcType="INTEGER" />
+    <result column="uls_is_weixin" property="ulsIsWeixin" jdbcType="INTEGER" />
+    <result column="uls_is_qq" property="ulsIsQq" jdbcType="INTEGER" />
+    <result column="uls_is_weibo" property="ulsIsWeibo" jdbcType="INTEGER" />
+    <result column="uls_is_register" property="ulsIsRegister" jdbcType="INTEGER" />
+    <result column="uls_login_is_registration" property="ulsLoginIsRegistration" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    uls_id, uls_type, uls_is_weixin, uls_is_qq, uls_is_weibo, uls_is_register, uls_login_is_registration
+  </sql>
+
+</mapper>
