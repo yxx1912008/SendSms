@@ -49,15 +49,25 @@
 
 
         <%--批量输入短信变量--%>
-        <div class="layui-form-item layui-form-text">
+   <!--      <div class="layui-form-item layui-form-text">
             <label class="layui-form-label">短信变量</label>
             <div class="layui-input-block">
                 <textarea lay-verify="required" placeholder="请输入短信变量,多个变量请按顺序用英文逗号隔开" class="layui-textarea"
                           name="values"></textarea>
             </div>
-        </div>
+        </div> -->
 
 
+	
+	<div class="layui-form-item layui-form-text">
+	    <input name="valuesCount" lay-verify="required" value="${kitModel.placeholderNum}" autocomplete="off"
+               class="layui-input" type="hidden">
+            <label class="layui-form-label">短信变量</label>
+		<c:forEach  begin="0" end="${kitModel.placeholderNum-1}" step="1" varStatus="status" >
+ 			<label class="layui-form-label">变量:${status.index+1}</label>
+ 			<input type="text" name="values[${status.index}]"  lay-verify="required" placeholder="请按照顺序输入变量" autocomplete="off" class="layui-input">
+		</c:forEach>
+ 	</div> 
         <div class="layui-form-item">
             <button class="layui-btn" lay-submit="" lay-filter="add">发送</button>
         </div>
@@ -75,7 +85,6 @@
 
         //监听提交，发送请求
         form.on('submit(add)', function (data) {
-
 
             if (data.field.kitAdminPassword != data.field.kitAdminPasswordAgen) {
                 layer.alert('两次密码输入不一致');

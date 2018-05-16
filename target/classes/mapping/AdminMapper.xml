@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cc.openkit.admin.dao.AdminMapper" >
+  <resultMap id="BaseResultMap" type="cc.openkit.admin.model.Admin" >
+    <id column="kit_admin_id" property="kitAdminId" jdbcType="VARCHAR" />
+    <result column="kit_admin_username" property="kitAdminUsername" jdbcType="VARCHAR" />
+    <result column="kit_admin_password" property="kitAdminPassword" jdbcType="VARCHAR" />
+    <result column="kit_admin_name" property="kitAdminName" jdbcType="VARCHAR" />
+    <result column="kit_admin_img_url" property="kitAdminImgUrl" jdbcType="VARCHAR" />
+    <result column="group_id" property="groupId" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    kit_admin_id, kit_admin_username, kit_admin_password, kit_admin_name,kit_admin_img_url,group_id
+  </sql>
+
+  <!--根据用户名密码查询用户，用于登陆-->
+  <select id="getModelByUsernameAndPassword" resultMap="BaseResultMap" parameterType="cc.openkit.admin.model.Admin" >
+    select
+    <include refid="Base_Column_List" />
+    from kit_admin
+    where kit_admin_username = #{kitAdminUsername,jdbcType=VARCHAR} and kit_admin_password = #{kitAdminPassword,jdbcType=VARCHAR}
+  </select>
+
+
+  <!-- 使用了mapper通用方法，所以以下基本的增删改查不需要写 -->
+
+  <update id="updateByAdminId" parameterType="cc.openkit.admin.model.Admin" >
+  update kit_admin
+    <set >
+      <if test="kitAdminUsername != null" >
+        kit_admin_username = #{kitAdminUsername,jdbcType=VARCHAR},
+      </if>
+      <if test="kitAdminPassword != null" >
+        kit_admin_password = #{kitAdminPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="kitAdminName != null" >
+        kit_admin_name = #{kitAdminName,jdbcType=VARCHAR},
+      </if>
+      <if test="kitAdminImgUrl != null" >
+        kit_admin_img_url = #{kitAdminImgUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="groupId != null" >
+        group_id = #{groupId,jdbcType=INTEGER},
+      </if>
+    </set>
+  where kit_admin_id = #{kitAdminId,jdbcType=VARCHAR}
+  </update>
+
+
+
+
+  <!--<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >-->
+    <!--select -->
+    <!--<include refid="Base_Column_List" />-->
+    <!--from kit_admin-->
+    <!--where kit_admin_id = #{kitAdminId,jdbcType=VARCHAR}-->
+  <!--</select>-->
+  <!--<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >-->
+    <!--delete from kit_admin-->
+    <!--where kit_admin_id = #{kitAdminId,jdbcType=VARCHAR}-->
+  <!--</delete>-->
+  <!--<insert id="insert" parameterType="cc.openkit.admin.model.Admin" >-->
+    <!--insert into kit_admin (kit_admin_id, kit_admin_username, kit_admin_password, -->
+      <!--kit_admin_name)-->
+    <!--values (#{kitAdminId,jdbcType=VARCHAR}, #{kitAdminUsername,jdbcType=VARCHAR}, #{kitAdminPassword,jdbcType=VARCHAR}, -->
+      <!--#{kitAdminName,jdbcType=VARCHAR})-->
+  <!--</insert>-->
+  <!--<insert id="insertSelective" parameterType="cc.openkit.admin.model.Admin" >-->
+    <!--insert into kit_admin-->
+    <!--<trim prefix="(" suffix=")" suffixOverrides="," >-->
+      <!--<if test="kitAdminId != null" >-->
+        <!--kit_admin_id,-->
+      <!--</if>-->
+      <!--<if test="kitAdminUsername != null" >-->
+        <!--kit_admin_username,-->
+      <!--</if>-->
+      <!--<if test="kitAdminPassword != null" >-->
+        <!--kit_admin_password,-->
+      <!--</if>-->
+      <!--<if test="kitAdminName != null" >-->
+        <!--kit_admin_name,-->
+      <!--</if>-->
+    <!--</trim>-->
+    <!--<trim prefix="values (" suffix=")" suffixOverrides="," >-->
+      <!--<if test="kitAdminId != null" >-->
+        <!--#{kitAdminId,jdbcType=VARCHAR},-->
+      <!--</if>-->
+      <!--<if test="kitAdminUsername != null" >-->
+        <!--#{kitAdminUsername,jdbcType=VARCHAR},-->
+      <!--</if>-->
+      <!--<if test="kitAdminPassword != null" >-->
+        <!--#{kitAdminPassword,jdbcType=VARCHAR},-->
+      <!--</if>-->
+      <!--<if test="kitAdminName != null" >-->
+        <!--#{kitAdminName,jdbcType=VARCHAR},-->
+      <!--</if>-->
+    <!--</trim>-->
+  <!--</insert>-->
+  <!--<update id="updateByPrimaryKeySelective" parameterType="cc.openkit.admin.model.Admin" >-->
+    <!--update kit_admin-->
+    <!--<set >-->
+      <!--<if test="kitAdminUsername != null" >-->
+        <!--kit_admin_username = #{kitAdminUsername,jdbcType=VARCHAR},-->
+      <!--</if>-->
+      <!--<if test="kitAdminPassword != null" >-->
+        <!--kit_admin_password = #{kitAdminPassword,jdbcType=VARCHAR},-->
+      <!--</if>-->
+      <!--<if test="kitAdminName != null" >-->
+        <!--kit_admin_name = #{kitAdminName,jdbcType=VARCHAR},-->
+      <!--</if>-->
+    <!--</set>-->
+    <!--where kit_admin_id = #{kitAdminId,jdbcType=VARCHAR}-->
+  <!--</update>-->
+  <!--<update id="updateByPrimaryKey" parameterType="cc.openkit.admin.model.Admin" >-->
+    <!--update kit_admin-->
+    <!--set kit_admin_username = #{kitAdminUsername,jdbcType=VARCHAR},-->
+      <!--kit_admin_password = #{kitAdminPassword,jdbcType=VARCHAR},-->
+      <!--kit_admin_name = #{kitAdminName,jdbcType=VARCHAR}-->
+    <!--where kit_admin_id = #{kitAdminId,jdbcType=VARCHAR}-->
+  <!--</update>-->
+</mapper>

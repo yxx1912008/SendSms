@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cc.openkit.admin.dao.UserMapper" >
+  <resultMap id="BaseResultMap" type="cc.openkit.admin.model.User" >
+    <id column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="user_login_name" property="userLoginName" jdbcType="VARCHAR" />
+    <result column="user_password" property="userPassword" jdbcType="VARCHAR" />
+    <result column="user_phone" property="userPhone" jdbcType="VARCHAR" />
+    <result column="user_email" property="userEmail" jdbcType="VARCHAR" />
+    <result column="user_img" property="userImg" jdbcType="VARCHAR" />
+    <result column="user_token" property="userToken" jdbcType="VARCHAR" />
+    <result column="user_time" property="userTime" jdbcType="TIMESTAMP" />
+    <result column="user_update_time" property="userUpdateTime" jdbcType="TIMESTAMP" />
+    <result column="user_type" property="userType" jdbcType="INTEGER" />
+    <result column="user_recommend_code" property="userRecommendCode" jdbcType="VARCHAR" />
+    <result column="user_recommend_person" property="userRecommendPerson" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <resultMap id="UserModelVo" type="cc.openkit.admin.model.User" extends="BaseResultMap" >
+    <result column="user_recommend_name" property="userRecommendPerson" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    user_id, user_name, user_login_name, user_password, user_phone, user_email, user_img, 
+    user_token, user_time, user_update_time, user_type,user_recommend_code,user_recommend_person
+  </sql>
+
+  <sql id="User_List" >
+    u.user_id user_id,
+    u.user_name user_name,
+    u.user_login_name user_login_name,
+    u.user_password user_password,
+    u.user_phone user_phone,
+    u.user_email user_email,
+    u.user_img user_img,
+    u.user_token user_token,
+    u.user_time user_time,
+    u.user_update_time user_update_time,
+    u.user_type user_type,
+    u.user_recommend_code user_recommend_code,
+    u.user_recommend_person user_recommend_person
+  </sql>
+
+  <sql id="Recommend_List" >
+    r.user_name user_recommend_name
+  </sql>
+
+  <select id="getFu" resultMap="UserModelVo" parameterType="cc.openkit.admin.model.Admin" >
+    select
+    <include refid="User_List" />
+    ,
+    <include refid="Recommend_List" />
+    from kit_user u
+    left join kit_user r
+    on u.user_recommend_person = r.user_recommend_code
+  </select>
+
+
+</mapper>

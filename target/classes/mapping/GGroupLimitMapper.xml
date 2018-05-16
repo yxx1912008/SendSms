@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cc.openkit.admin.dao.GGroupLimitMapper" >
+  <resultMap id="BaseResultMap" type="cc.openkit.admin.model.GGroupLimit" >
+    <id column="gl_id" property="glId" jdbcType="VARCHAR" />
+    <result column="group_id" property="groupId" jdbcType="INTEGER" />
+    <result column="limit_id" property="limitId" jdbcType="INTEGER" />
+    <result column="group_c" property="groupC" jdbcType="INTEGER" />
+    <result column="group_r" property="groupR" jdbcType="INTEGER" />
+    <result column="group_u" property="groupU" jdbcType="INTEGER" />
+    <result column="group_d" property="groupD" jdbcType="INTEGER" />
+  </resultMap>
+
+  <resultMap id="BaseVoMap" type="cc.openkit.admin.vo.LimitVo" >
+    <id column="limit_id" property="limitId" jdbcType="INTEGER" />
+    <result column="limit_sequence" property="limitSequence" jdbcType="INTEGER" />
+    <result column="limit_ico" property="limitIco" jdbcType="VARCHAR" />
+    <result column="limit_title" property="limitTitle" jdbcType="VARCHAR" />
+    <result column="limit_action" property="limitAction" jdbcType="VARCHAR" />
+    <result column="limit_leaderid" property="limitLeaderid" jdbcType="INTEGER" />
+    <result column="limit_system" property="limitSystem" jdbcType="INTEGER" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    gl_id, group_id, limit_id, group_c, group_r, group_u, group_d
+  </sql>
+
+  <sql id="Base_vo_List" >
+    l.limit_id limit_id,
+    l.limit_sequence limit_sequence,
+    l.limit_ico limit_ico,
+    l.limit_title limit_title,
+    l.limit_action limit_action,
+    l.limit_leaderid limit_leaderid,
+    l.limit_system limit_system
+  </sql>
+
+
+  <select id="getModelByGroupId" resultMap="BaseVoMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_vo_List" />
+    from kit_g_group_limit g
+    RIGHT join kit_g_limit l
+    on g.limit_id = l.limit_id
+    where g.group_id = #{groupId,jdbcType=INTEGER}
+    ORDER BY l.limit_sequence DESC
+  </select>
+
+  <select id="getModelByGroupIdAndLimitId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from kit_g_group_limit
+    where group_id = #{adminid,jdbcType=INTEGER} and limit_id = #{id,jdbcType=INTEGER}
+
+  </select>
+
+  <delete id="delByGroupId" parameterType="java.lang.Integer" >
+  delete from kit_g_group_limit
+  where group_id = #{integer,jdbcType=INTEGER}
+  </delete>
+
+  <select id="getListByGroupId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from kit_g_group_limit
+    where group_id = #{integer,jdbcType=INTEGER}
+  </select>
+
+</mapper>

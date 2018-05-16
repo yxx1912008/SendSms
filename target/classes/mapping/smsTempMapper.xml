@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cc.openkit.admin.dao.smsTempMapper">
+    <resultMap id="BaseResultMap" type="cc.openkit.admin.model.smsTempDo">
+        <id column="temp_id" property="tempId" jdbcType="VARCHAR"/>
+        <result column="type" property="type" jdbcType="INTEGER"/>
+        <result column="title" property="title" jdbcType="VARCHAR"/>
+        <result column="placeholder_num" property="placeholderNum" jdbcType="INTEGER"/>
+        <result column="shopUserID" property="shopuserid" jdbcType="VARCHAR"/>
+        <result column="area_code" property="areaCode" jdbcType="VARCHAR"/>
+        <result column="precise_type" property="preciseType" jdbcType="INTEGER"/>
+        <result column="content" property="content" jdbcType="VARCHAR"/>
+        <result column="placeholder_filed_type" property="placeholderFiledType" jdbcType="VARCHAR"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="gmt_create" property="gmtCreate" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    temp_id, type, title, placeholder_num, shopUserID, area_code, precise_type, content, 
+    placeholder_filed_type, remark, gmt_create
+  </sql>
+
+</mapper>

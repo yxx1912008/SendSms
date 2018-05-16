@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cc.openkit.admin.dao.AdvHelloMapper" >
+  <resultMap id="BaseResultMap" type="cc.openkit.admin.model.AdvHello" >
+    <id column="ah_id" property="ahId" jdbcType="VARCHAR" />
+    <result column="ah_sequence" property="ahSequence" jdbcType="INTEGER" />
+    <result column="ah_img" property="ahImg" jdbcType="VARCHAR" />
+    <result column="ah_url" property="ahUrl" jdbcType="VARCHAR" />
+    <result column="ah_time" property="ahTime" jdbcType="TIMESTAMP" />
+    <result column="ah_start_time" property="ahStartTime" jdbcType="TIMESTAMP" />
+    <result column="ah_end_time" property="ahEndTime" jdbcType="TIMESTAMP" />
+    <result column="ah_type" property="ahType" jdbcType="INTEGER" />
+    <result column="ah_img" property="ahImg" jdbcType="VARCHAR" />
+    <result column="ah_title" property="ahTitle" jdbcType="VARCHAR" />
+    <result column="ah_summary" property="ahSummary" jdbcType="VARCHAR" />
+
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ah_id, ah_sequence, ah_img, ah_url, ah_time, ah_start_time, ah_end_time, ah_type, ah_title, ah_summary
+  </sql>
+
+  <select id="appGet" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+  select
+  <include refid="Base_Column_List" />
+  from kit_adv_hello
+  where ah_type = 1 and ah_start_time &lt;= now() and ah_end_time &gt;= now()
+  ORDER BY ah_sequence
+  LIMIT 0,#{kitWebHellowAdvSize,jdbcType=INTEGER}
+  </select>
+
+</mapper>

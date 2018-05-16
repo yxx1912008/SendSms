@@ -1,5 +1,19 @@
 package cc.openkit.admin.controller.api;
 
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.log4j.Logger;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 import cc.openkit.admin.controller.user.UserController;
 import cc.openkit.admin.model.Sign;
 import cc.openkit.admin.model.User;
@@ -10,21 +24,8 @@ import cc.openkit.admin.util.AppUtil;
 import cc.openkit.admin.util.StaticFinalVar;
 import cc.openkit.common.KitUtil;
 import cc.openkit.kitIsNull.KitVerification;
-import com.alibaba.fastjson.JSONObject;
-import org.apache.log4j.Logger;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import com.alibaba.fastjson.JSONObject;
 
 /**
  * 统一的前端用户登录账号
@@ -36,14 +37,14 @@ import java.util.Map;
 @Scope("prototype")
 @RequestMapping("/apiUser")
 public class ApiUserController {
-    private Logger log = Logger.getLogger(UserController.class);
+    private Logger             log = Logger.getLogger(UserController.class);
 
     @Resource
-    private UserService userService;
+    private UserService        userService;
     @Resource
     private GGroupLimitService gGroupLimitService;
     @Resource
-    private SignService signService;
+    private SignService        signService;
 
     /**
      * 用户注册信息提交，主要是手机号码验证码注册也就是说手机号码，验证码，kst 几个参数必传，其他的可以根据APP的具体需求进行
@@ -54,11 +55,11 @@ public class ApiUserController {
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     @ResponseBody
-    public Object register(HttpServletRequest request){
+    public Object register(HttpServletRequest request) {
         log.info("APP端注册接口调用 开始");
         Map<String, Object> map = new HashMap<String, Object>();
         // APP验证
-        if(!AppUtil.isApp(request)){
+        if (!AppUtil.isApp(request)) {
             return JSONObject.toJSON(KitUtil.returnMap("4001", StaticFinalVar.APP_ERR));
         }
 
@@ -70,8 +71,8 @@ public class ApiUserController {
         String kst = request.getParameter("KST");// 验证码唯一标识
         // 1.2. 先验证手机号码和验证码是否可用
         Map<String, Object> signMap = new HashMap<String, Object>();
-        signMap = signService.isSignOk(userPhone,kst,s);
-        if(!"200".equals(signMap.get("code"))){
+        signMap = signService.isSignOk(userPhone, kst, s);
+        if (!"200".equals(signMap.get("code"))) {
             return JSONObject.toJSON(signMap);
         }
         // 2. 验证码验证成功开始写这注册，我们需要获取所有的参数
@@ -89,16 +90,17 @@ public class ApiUserController {
         // 4. 测试是不是已经注册
         int i = userService.queryCount(user);
 
-        if(i>0){
-            return JSONObject.toJSON(KitUtil.returnMap("101",StaticFinalVar.HAVE_PHONE));
+        if (i > 0) {
+            return JSONObject.toJSON(KitUtil.returnMap("101", StaticFinalVar.HAVE_PHONE));
         }
         // 3.1 验证推荐码也就是推荐人是否存在
         User us = new User();
-        if(userRecommendPerson!=null && !"".equals(userRecommendPerson)){
+        if (userRecommendPerson != null && !"".equals(userRecommendPerson)) {
             us.setUserRecommendCode(userRecommendPerson);
             User u = userService.queryOne(us);
-            if(u==null){
-                return JSONObject.toJSON(KitUtil.returnMap("101",StaticFinalVar.HAVE_NOT_RECOMMEND));
+            if (u == null) {
+                return JSONObject.toJSON(KitUtil
+                    .returnMap("101", StaticFinalVar.HAVE_NOT_RECOMMEND));
             }
         }
 
@@ -109,7 +111,7 @@ public class ApiUserController {
             r = KitUtil.getStringRandom(StaticFinalVar.RECOMMEND_LENGTH);
             us.setUserRecommendCode(r);
             int count = userService.queryCount(us);
-            if(count==0){
+            if (count == 0) {
                 break;
             }
         } while (true);
@@ -128,7 +130,7 @@ public class ApiUserController {
 
         // 5. 保存数据
         int ii = userService.save(user);
-        if(ii == 1){
+        if (ii == 1) {
             // 修改验证码为已经使用
 
             Sign s2 = new Sign();
@@ -136,13 +138,13 @@ public class ApiUserController {
             s2.setSignType(2);
             signService.updateSelective(s2);
 
-            map = KitUtil.returnMap("200",StaticFinalVar.REGISTER_OK);
-            map.put("user",user);
-        }else{
-            KitUtil.returnMap("101",StaticFinalVar.REGISTER_ERR);
+            map = KitUtil.returnMap("200", StaticFinalVar.REGISTER_OK);
+            map.put("user", user);
+        } else {
+            KitUtil.returnMap("101", StaticFinalVar.REGISTER_ERR);
         }
 
-        return  JSONObject.toJSON(map);
+        return JSONObject.toJSON(map);
     }
 
     /**
@@ -152,11 +154,11 @@ public class ApiUserController {
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
-    public Object login(HttpServletRequest request){
+    public Object login(HttpServletRequest request) {
         log.info("APP端用户登录调用 开始");
         Map<String, Object> map = new HashMap<String, Object>();
         // APP验证
-        if(!AppUtil.isApp(request)){
+        if (!AppUtil.isApp(request)) {
             return JSONObject.toJSON(KitUtil.returnMap("4001", StaticFinalVar.APP_ERR));
         }
         Map<String, Object> signMap = new HashMap<String, Object>();
@@ -167,32 +169,34 @@ public class ApiUserController {
         User user = new User();
 
         // 1. 如果是手机号码
-        if(KitVerification.isMobile(username)){
+        if (KitVerification.isMobile(username)) {
             user.setUserPhone(username);
             User returnUser = userService.queryOne(user);
-            if(returnUser==null){
-                return JSONObject.toJSON(KitUtil.returnMap("101",StaticFinalVar.HAVE_NOT_PHONE));
+            if (returnUser == null) {
+                return JSONObject.toJSON(KitUtil.returnMap("101", StaticFinalVar.HAVE_NOT_PHONE));
             }
-            if(!returnUser.getUserPassword().equals(password)){
-                return JSONObject.toJSON(KitUtil.returnMap("101",StaticFinalVar.USERNAME_OR_PWD_ERR));
+            if (!returnUser.getUserPassword().equals(password)) {
+                return JSONObject.toJSON(KitUtil.returnMap("101",
+                    StaticFinalVar.USERNAME_OR_PWD_ERR));
             }
-            map = KitUtil.returnMap("200","");
-            map.put("user",returnUser);
+            map = KitUtil.returnMap("200", "");
+            map.put("user", returnUser);
             return JSONObject.toJSON(map);
         }
 
         // 2. 如果是邮箱
-        if(KitVerification.isEmail(username)){
+        if (KitVerification.isEmail(username)) {
             user.setUserEmail(username);
             User returnUser = userService.queryOne(user);
-            if(returnUser==null){
-                return JSONObject.toJSON(KitUtil.returnMap("101",StaticFinalVar.HAVE_NOT_EMAIL));
+            if (returnUser == null) {
+                return JSONObject.toJSON(KitUtil.returnMap("101", StaticFinalVar.HAVE_NOT_EMAIL));
             }
-            if(!returnUser.getUserPassword().equals(password)){
-                return JSONObject.toJSON(KitUtil.returnMap("101",StaticFinalVar.USERNAME_OR_PWD_ERR));
+            if (!returnUser.getUserPassword().equals(password)) {
+                return JSONObject.toJSON(KitUtil.returnMap("101",
+                    StaticFinalVar.USERNAME_OR_PWD_ERR));
             }
-            map = KitUtil.returnMap("200","");
-            map.put("user",returnUser);
+            map = KitUtil.returnMap("200", "");
+            map.put("user", returnUser);
             return JSONObject.toJSON(map);
         }
 
@@ -203,14 +207,14 @@ public class ApiUserController {
         // 3.1 看这个用户是不是存在推荐人，如果存在，查出推荐人并返回
         slectRecommend(returnUser);
 
-        if(returnUser==null){
-            return JSONObject.toJSON(KitUtil.returnMap("101",StaticFinalVar.HAVE_NOT_USER));
+        if (returnUser == null) {
+            return JSONObject.toJSON(KitUtil.returnMap("101", StaticFinalVar.HAVE_NOT_USER));
         }
-        if(!returnUser.getUserPassword().equals(password)){
-            return JSONObject.toJSON(KitUtil.returnMap("101",StaticFinalVar.USERNAME_OR_PWD_ERR));
+        if (!returnUser.getUserPassword().equals(password)) {
+            return JSONObject.toJSON(KitUtil.returnMap("101", StaticFinalVar.USERNAME_OR_PWD_ERR));
         }
-        map = KitUtil.returnMap("200","");
-        map.put("user",returnUser);
+        map = KitUtil.returnMap("200", "");
+        map.put("user", returnUser);
         return JSONObject.toJSON(map);
     }
 
@@ -221,11 +225,11 @@ public class ApiUserController {
      */
     @RequestMapping(value = "/seekPwd", method = RequestMethod.POST)
     @ResponseBody
-    public Object seekPwd(HttpServletRequest request){
+    public Object seekPwd(HttpServletRequest request) {
         log.info("APP端用户手机号码修改密码方法调用 开始");
         Map<String, Object> map = new HashMap<String, Object>();
         // APP验证
-        if(!AppUtil.isApp(request)){
+        if (!AppUtil.isApp(request)) {
             return JSONObject.toJSON(KitUtil.returnMap("4001", StaticFinalVar.APP_ERR));
         }
 
@@ -240,15 +244,15 @@ public class ApiUserController {
         User user = new User();
         user.setUserPhone(userPhone);
         User returnuser = userService.queryOne(user);
-        if(returnuser==null){
+        if (returnuser == null) {
             // 如果找不到，提醒手机号码未注册
-            return JSONObject.toJSON(KitUtil.returnMap("101",StaticFinalVar.HAVE_NOT_PHONE));
+            return JSONObject.toJSON(KitUtil.returnMap("101", StaticFinalVar.HAVE_NOT_PHONE));
         }
 
         // 否则先验证手机号码和验证码是否可用
         Map<String, Object> signMap = new HashMap<String, Object>();
-        signService.isSignOk(userPhone,kst,s);
-        if(!"200".equals(signMap.get("code"))){
+        signService.isSignOk(userPhone, kst, s);
+        if (!"200".equals(signMap.get("code"))) {
             return JSONObject.toJSON(signMap);
         }
 
@@ -257,18 +261,17 @@ public class ApiUserController {
         returnuser.setUserPassword(password);
         returnuser.setUserToken(KitUtil.uuid());
         int i = userService.updateSelective(user);
-        if(i==1){
-            map = KitUtil.returnMap("200","");
-            map.put("user",returnuser);
+        if (i == 1) {
+            map = KitUtil.returnMap("200", "");
+            map.put("user", returnuser);
             return JSONObject.toJSON(map);
-        }else{
+        } else {
             slectRecommend(returnuser);
-            map = KitUtil.returnMap("101",StaticFinalVar.SEEK_PWD_ERR);
-            map.put("user",returnuser);
+            map = KitUtil.returnMap("101", StaticFinalVar.SEEK_PWD_ERR);
+            map.put("user", returnuser);
             return JSONObject.toJSON(map);
         }
     }
-
 
     /**
      * 手机号码验证码登录
@@ -277,11 +280,11 @@ public class ApiUserController {
      */
     @RequestMapping(value = "/phoneAndSign", method = RequestMethod.POST)
     @ResponseBody
-    public Object phoneAndSign(HttpServletRequest request){
+    public Object phoneAndSign(HttpServletRequest request) {
         log.info("APP端用户账号和验证码调用 开始");
         Map<String, Object> map = new HashMap<String, Object>();
         // APP验证
-        if(!AppUtil.isApp(request)){
+        if (!AppUtil.isApp(request)) {
             return JSONObject.toJSON(KitUtil.returnMap("4001", StaticFinalVar.APP_ERR));
         }
 
@@ -296,29 +299,29 @@ public class ApiUserController {
         User user = new User();
         user.setUserPhone(userPhone);
         User returnuser = userService.queryOne(user);
-        if(returnuser==null){
+        if (returnuser == null) {
             // 如果找不到，提醒手机号码未注册
-            return JSONObject.toJSON(KitUtil.returnMap("101",StaticFinalVar.HAVE_NOT_PHONE));
+            return JSONObject.toJSON(KitUtil.returnMap("101", StaticFinalVar.HAVE_NOT_PHONE));
         }
 
         // 否则先验证手机号码和验证码是否可用
         Map<String, Object> signMap = new HashMap<String, Object>();
-        signService.isSignOk(userPhone,kst,s);
-        if(!"200".equals(signMap.get("code"))){
+        signService.isSignOk(userPhone, kst, s);
+        if (!"200".equals(signMap.get("code"))) {
             return JSONObject.toJSON(signMap);
         }
 
         // 验证码通过之后，修改用户的Token保存并返回信息
         returnuser.setUserToken(KitUtil.uuid());
         int i = userService.updateSelective(user);
-        if(i==1){
-            map = KitUtil.returnMap("200","");
-            map.put("user",returnuser);
+        if (i == 1) {
+            map = KitUtil.returnMap("200", "");
+            map.put("user", returnuser);
             return JSONObject.toJSON(map);
-        }else{
+        } else {
             slectRecommend(returnuser);
-            map = KitUtil.returnMap("101",StaticFinalVar.LOGIN_ERR);
-            map.put("user",returnuser);
+            map = KitUtil.returnMap("101", StaticFinalVar.LOGIN_ERR);
+            map.put("user", returnuser);
             return JSONObject.toJSON(map);
         }
     }
@@ -330,11 +333,11 @@ public class ApiUserController {
      */
     @RequestMapping(value = "/seekPwdByOldPwd", method = RequestMethod.POST)
     @ResponseBody
-    public Object seekPwdByOldPwd(HttpServletRequest request){
+    public Object seekPwdByOldPwd(HttpServletRequest request) {
         log.info("APP端用户根据老密码修改新密码接口调用 开始");
         Map<String, Object> map = new HashMap<String, Object>();
         // APP验证
-        if(!AppUtil.isAppAndLogin(request)){
+        if (!AppUtil.isAppAndLogin(request)) {
             return JSONObject.toJSON(KitUtil.returnMap("4001", StaticFinalVar.APP_ERR));
         }
         // APP验证OK先验证手机号码
@@ -345,13 +348,14 @@ public class ApiUserController {
         user.setUserId(uid);
         user.setUserPassword(oldPwd);
         int i = userService.queryCount(user);
-        if(i==0){
-            return JSONObject.toJSON(KitUtil.returnMap("101",StaticFinalVar.USERNAME_OR_PWD_ERR));
+        if (i == 0) {
+            return JSONObject.toJSON(KitUtil.returnMap("101", StaticFinalVar.USERNAME_OR_PWD_ERR));
         }
         user.setUserPassword(newPwd);
         int ii = userService.updateSelective(user);
 
-        return JSONObject.toJSON( ii==1 ? KitUtil.returnMap("101",StaticFinalVar.UPDATE_OK) : KitUtil.returnMap("101",StaticFinalVar.UPDATE_ERR));
+        return JSONObject.toJSON(ii == 1 ? KitUtil.returnMap("101", StaticFinalVar.UPDATE_OK)
+            : KitUtil.returnMap("101", StaticFinalVar.UPDATE_ERR));
     }
 
     /**
@@ -359,13 +363,12 @@ public class ApiUserController {
      * @param returnUser
      */
     private void slectRecommend(User returnUser) {
-        if(KitUtil.feikong(returnUser.getUserRecommendPerson())){
+        if (KitUtil.feikong(returnUser.getUserRecommendPerson())) {
             User us = new User();
             us.setUserRecommendCode(returnUser.getUserRecommendPerson());
             User u = userService.queryOne(us);
             returnUser.setUserRecommendName(u.getUserName());
         }
     }
-
 
 }

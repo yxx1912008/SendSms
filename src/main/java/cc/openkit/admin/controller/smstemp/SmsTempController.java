@@ -1,16 +1,13 @@
 package cc.openkit.admin.controller.smstemp;
 
-import cc.openkit.admin.controller.adv_hello.AdvHelloController;
-import cc.openkit.admin.model.AdvHello;
-import cc.openkit.admin.model.GGroupLimit;
-import cc.openkit.admin.model.sms.YtxSmsContextOrder;
-import cc.openkit.admin.model.smsTempDo;
-import cc.openkit.admin.service.g.GGroupLimitService;
-import cc.openkit.admin.service.message.rytx.PhoneHelper;
-import cc.openkit.admin.service.smstemp.SmsTempService;
-import cc.openkit.admin.util.StaticFinalVar;
-import cc.openkit.common.KitUtil;
-import com.alibaba.fastjson.JSONObject;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.context.annotation.Scope;
@@ -20,24 +17,29 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.*;
+import cc.openkit.admin.model.GGroupLimit;
+import cc.openkit.admin.model.smsTempDo;
+import cc.openkit.admin.model.sms.YtxSmsContextOrder;
+import cc.openkit.admin.service.g.GGroupLimitService;
+import cc.openkit.admin.service.message.rytx.PhoneHelper;
+import cc.openkit.admin.service.smstemp.SmsTempService;
+import cc.openkit.admin.util.StaticFinalVar;
+import cc.openkit.common.KitUtil;
+
+import com.alibaba.fastjson.JSONObject;
 
 @Controller
 @Scope("prototype")
 @RequestMapping("/smsTemp")
 public class SmsTempController {
 
-
     @Resource
-    private SmsTempService smsTempService;
+    private SmsTempService     smsTempService;
 
     @Resource
     private GGroupLimitService gGroupLimitService;
 
-    private Logger log = Logger.getLogger(SmsTempController.class);
+    private Logger             log = Logger.getLogger(SmsTempController.class);
 
     /**
      * 获取短信模板页面
@@ -65,7 +67,6 @@ public class SmsTempController {
         return mv;
     }
 
-
     /**
      * 获取列表数据
      *
@@ -91,7 +92,8 @@ public class SmsTempController {
         smsTempDo.setPreciseType(0);
 
         // 分页查询
-        List<smsTempDo> list = smsTempService.queryPageListByWhere(smsTempDo, Integer.valueOf(page), Integer.valueOf(limit));
+        List<smsTempDo> list = smsTempService.queryPageListByWhere(smsTempDo,
+            Integer.valueOf(page), Integer.valueOf(limit));
         int size = smsTempService.queryCount(smsTempDo);
 
         // 返回数据
@@ -103,7 +105,6 @@ public class SmsTempController {
         return JSONObject.toJSON(map);
 
     }
-
 
     /**
      * 修改前的查询
@@ -122,7 +123,6 @@ public class SmsTempController {
         return mv;
     }
 
-
     /**
      * 发送短信
      *
@@ -136,19 +136,34 @@ public class SmsTempController {
 
         // 取值
         String phonesParam = request.getParameter("phones");
-        String valuesParam = request.getParameter("values");
-        String tempId = request.getParameter("tempId");
-
-
-        if (StringUtils.isBlank(phonesParam) || StringUtils.isBlank(valuesParam)) {
-            return JSONObject.toJSON(KitUtil.returnMap("101", "请输入正确的参数"));
+        if (StringUtils.isBlank(phonesParam)) {
+            return JSONObject.toJSON(KitUtil.returnMap("101", "手机号码不能为空"));
         }
-        String[] phones = phonesParam.split(",");
-        String[] values = valuesParam.split(",");
+        String valuesCount = request.getParameter("valuesCount");
+        Integer num = Integer.parseInt(valuesCount);
+        //判断参数是否正确
+        if (null == num || num < 0) {
+            return JSONObject.toJSON(KitUtil.returnMap("101", "参数有误"));
+        }
 
+        String[] values = new String[num];
+        String temp = null;
+        for (int i = 0; i < num; i++) {
+            temp = request.getParameter("values[" + i + "]");
+            if (null != temp) {
+                values[i] = temp;
+            }
+        }
+        String tempId = request.getParameter("tempId");
+        String[] phones = phonesParam.split(",");
         if (null == phones || null == values || phones.length == 0 || values.length == 0) {
             return JSONObject.toJSON(KitUtil.returnMap("101", "参数转换失败"));
         }
+
+        if (phones.length > 10) {
+            return JSONObject.toJSON(KitUtil.returnMap("101", "手机号码数量超过十个"));
+        }
+
         //后台验证手机号码格式
         for (String phone : phones) {
             if (StringUtils.isBlank(phone)) {
@@ -157,7 +172,6 @@ public class SmsTempController {
             if (phone.length() != 11) {
                 return JSONObject.toJSON(KitUtil.returnMap("101", "手机号码有误"));
             }
-            System.out.println(phone);
         }
         PhoneHelper helper = new PhoneHelper();
         YtxSmsContextOrder smsContext = new YtxSmsContextOrder();
@@ -170,12 +184,7 @@ public class SmsTempController {
             return JSONObject.toJSON(KitUtil.returnMap("200", "发送成功"));
         }
         return JSONObject.toJSON(KitUtil.returnMap("101", "发送失败"));
-        // 封装对象
-//        if (KitUtil.feikong(ahSummary)) {
-//            advHello.setAhSummary(ahSummary);
-//        }
-//        return JSONObject.toJSON(advHelloService.updateSelective(advHello) == 1 ? KitUtil.returnMap("200", StaticFinalVar.UPDATE_OK) : KitUtil.returnMap("101", StaticFinalVar.UPDATE_ERR));
-    }
 
+    }
 
 }

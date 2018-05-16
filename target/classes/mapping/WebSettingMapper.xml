@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cc.openkit.admin.dao.WebSettingMapper" >
+  <resultMap id="BaseResultMap" type="cc.openkit.admin.model.WebSetting" >
+    <id column="kit_web_id" property="kitWebId" jdbcType="INTEGER" />
+    <result column="kit_web_name" property="kitWebName" jdbcType="VARCHAR" />
+    <result column="kit_web_message" property="kitWebMessage" jdbcType="INTEGER" />
+    <result column="kit_web_push" property="kitWebPush" jdbcType="INTEGER" />
+    <result column="kit_web_file" property="kitWebFile" jdbcType="INTEGER" />
+    <result column="kit_sige_size" property="kitSigeSize" jdbcType="INTEGER" />
+    <result column="kit_web_hellow_adv_size" property="kitWebHellowAdvSize" jdbcType="INTEGER" />
+    <result column="kit_sign_active_time" property="kitSignActiveTime" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    kit_web_id, kit_web_name, kit_web_message, kit_web_push, kit_web_file, kit_sige_size, kit_web_hellow_adv_size, kit_sign_active_time
+  </sql>
+
+</mapper>

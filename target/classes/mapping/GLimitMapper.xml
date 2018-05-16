@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cc.openkit.admin.dao.GLimitMapper" >
+  <resultMap id="BaseResultMap" type="cc.openkit.admin.model.GLimit" >
+    <id column="limit_id" property="limitId" jdbcType="INTEGER" />
+    <result column="limit_sequence" property="limitSequence" jdbcType="INTEGER" />
+    <result column="limit_ico" property="limitIco" jdbcType="VARCHAR" />
+    <result column="limit_title" property="limitTitle" jdbcType="VARCHAR" />
+    <result column="limit_action" property="limitAction" jdbcType="VARCHAR" />
+    <result column="limit_leaderid" property="limitLeaderid" jdbcType="INTEGER" />
+    <result column="limit_system" property="limitSystem" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    limit_id, limit_sequence, limit_ico, limit_title, limit_action, limit_leaderid, limit_system
+  </sql>
+
+</mapper>

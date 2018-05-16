@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cc.openkit.admin.dao.GGroupMapper" >
+  <resultMap id="BaseResultMap" type="cc.openkit.admin.model.GGroup" >
+    <id column="group_id" property="groupId" jdbcType="INTEGER" />
+    <result column="group_name" property="groupName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    group_id, group_name
+  </sql>
+
+  <select id="getListByGroupName" resultMap="BaseResultMap" parameterType="cc.openkit.admin.model.GGroup" >
+    select
+    <include refid="Base_Column_List" />
+    from kit_g_group
+    where group_name = #{groupName,jdbcType=VARCHAR}
+  </select>
+
+</mapper>

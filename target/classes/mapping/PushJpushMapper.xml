@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cc.openkit.admin.dao.PushJpushMapper" >
+  <resultMap id="BaseResultMap" type="cc.openkit.admin.model.PushJpush" >
+    <id column="pj_id" property="pjId" jdbcType="INTEGER" />
+    <result column="pj_appkey" property="pjAppkey" jdbcType="VARCHAR" />
+    <result column="pj_mastersecret" property="pjMastersecret" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    pj_id, pj_appkey, pj_mastersecret
+  </sql>
+
+</mapper>

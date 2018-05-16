@@ -29,9 +29,12 @@
         </fieldset>
     </div>
     <div>
-        <c:if test="${kitG.groupC==1}">
-            <%--添加功能仍未实现--%>
+    <%--     <c:if test="${kitG.groupC==1}">
+            添加功能仍未实现
             <button class="layui-btn" id="add">添加</button>
+        </c:if> --%>
+         <c:if test="${kitG.groupC==1}">
+            <button class="layui-btn" id="reflash">刷新</button>
         </c:if>
         <div class="layui-inline" style="float: right">
             <div class="layui-input-inline">
@@ -68,6 +71,9 @@
         $('#add').on('click', function () {
             layer.msg('功能正在开发', {icon: 1, time: 1000});
         });
+        $('#reflash').on('click', function () {
+        	location.reload();
+        });
     });
 
     // 渲染数据
@@ -102,7 +108,8 @@
                     area: ['400px', '570px'],
                     maxmin: true,
                     end: function () {
-                        location.reload();
+                    	/* 点击关闭后的操作 */
+                        /* location.reload(); */
                     }
                 });
                 parent.layer.iframeAuto(index);

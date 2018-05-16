@@ -1,36 +1,36 @@
 package cc.openkit.admin.model;
 
-import javax.persistence.GeneratedValue;
+import java.util.Date;
+
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.util.Date;
 
 @Table(name = "sms_temp")
 public class smsTempDo {
 
     //模板 ID
     @Id
-    private String tempId;
+    private String  tempId;
 
     private Integer type;
 
-    private String title;
+    private String  title;
 
     private Integer placeholderNum;
 
-    private String shopuserid;
+    private String  shopuserid;
 
-    private String areaCode;
+    private String  areaCode;
 
     private Integer preciseType;
 
-    private String content;
+    private String  content;
 
-    private String placeholderFiledType;
+    private String  placeholderFiledType;
 
-    private String remark;
+    private String  remark;
 
-    private Date gmtCreate;
+    private Date    gmtCreate;
 
     public String getTempId() {
         return tempId;
@@ -101,7 +101,8 @@ public class smsTempDo {
     }
 
     public void setPlaceholderFiledType(String placeholderFiledType) {
-        this.placeholderFiledType = placeholderFiledType == null ? null : placeholderFiledType.trim();
+        this.placeholderFiledType = placeholderFiledType == null ? null : placeholderFiledType
+            .trim();
     }
 
     public String getRemark() {

@@ -9,17 +9,14 @@ import org.apache.log4j.Logger;
 
 import java.util.HashMap;
 
-
 public class PhoneHelper {
 
     /**
      * 日志.
      */
-    private static final Logger logger = Logger.getLogger("SMS-lOG");
+    private static final Logger logger     = Logger.getLogger("SMS-lOG");
 
-
-    private CCPRestSDK restSmsAPI = new CCPRestSDK();
-
+    private CCPRestSDK          restSmsAPI = new CCPRestSDK();
 
     /**
      * 功能：容联云通讯-发送短信
@@ -39,11 +36,11 @@ public class PhoneHelper {
             initSmsApi(smsContextOrder);
             // 接口短信模板id
             result = restSmsAPI.sendTemplateSMS(smsContextOrder.getReceiverPhone(),
-                    smsContextOrder.getSmsTempid(), smsContextOrder.getContents());
+                smsContextOrder.getSmsTempid(), smsContextOrder.getContents());
         } catch (Exception e) {
             logger.error(
-                    smsContextOrder.getSmsTempid() + ":容联云通讯-发送短信接口异常:"
-                            + JSON.toJSONString(smsContextOrder.getContents()), e);
+                smsContextOrder.getSmsTempid() + ":容联云通讯-发送短信接口异常:"
+                        + JSON.toJSONString(smsContextOrder.getContents()), e);
             return false;
         }
 
@@ -56,16 +53,15 @@ public class PhoneHelper {
         // 多个号码发送（只要有一个号码是对的就会返回正确）
         String phoneLogger = null;
         if (StringUtils.isNotBlank(smsContextOrder.getReceiverPhone())
-                && smsContextOrder.getReceiverPhone().length() < 24) {
+            && smsContextOrder.getReceiverPhone().length() < 24) {
             phoneLogger = ":接收手机号码=" + smsContextOrder.getReceiverPhone();
         }
         logger.error((StringUtils.isNotBlank(identificationNo) ? identificationNo : "sys")
-                + phoneLogger + "；短信模板id：" + smsContextOrder.getSmsTempid() + "；短信错误码="
-                + result.get("statusCode") + "；错误信息=" + result.get("statusMsg"));
+                     + phoneLogger + "；短信模板id：" + smsContextOrder.getSmsTempid() + "；短信错误码="
+                     + result.get("statusCode") + "；错误信息=" + result.get("statusMsg"));
 
         return false;
     }
-
 
     /**
      * 功能：填充配置参数
@@ -80,13 +76,13 @@ public class PhoneHelper {
         String smsPort = "8883";
         smsYtxConfig.setSmsPort(smsPort);
         // sms_ytx_sid
-        String accountName = "xxxxx";
+        String accountName = "8a48b551505b4af0015060653dfe0fed";
         smsYtxConfig.setAccountName(accountName);
         // sms_ytx_token
-        String accountPsd = "xxxx";
+        String accountPsd = "71e5772390c942c88864b159db644d61";
         smsYtxConfig.setAccountPsd(accountPsd);
         // sms_ytx_appid
-        String appId = "xxxxx";
+        String appId = "8a48b551505b4af00150606bae81101f";
         smsYtxConfig.setAppId(appId);
     }
 
@@ -102,6 +98,4 @@ public class PhoneHelper {
         restSmsAPI.setAppId(smsYtxConfig.getAppId());
     }
 
-
 }
-
