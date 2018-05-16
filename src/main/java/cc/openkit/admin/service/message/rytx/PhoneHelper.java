@@ -76,13 +76,13 @@ public class PhoneHelper {
         String smsPort = "8883";
         smsYtxConfig.setSmsPort(smsPort);
         // sms_ytx_sid
-        String accountName = "8a48b551505b4af0015060653dfe0fed";
+        String accountName = "xxx";
         smsYtxConfig.setAccountName(accountName);
         // sms_ytx_token
-        String accountPsd = "71e5772390c942c88864b159db644d61";
+        String accountPsd = "xxx";
         smsYtxConfig.setAccountPsd(accountPsd);
         // sms_ytx_appid
-        String appId = "8a48b551505b4af00150606bae81101f";
+        String appId = "xxx";
         smsYtxConfig.setAppId(appId);
     }
 
